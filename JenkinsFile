@@ -1,4 +1,4 @@
-pipeline {
+pipeline{
     agent any 
 
     stages {
@@ -8,7 +8,6 @@ pipeline {
                 // e.g. sh 'mvn clean install'
             }
         }
-
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running unit and integration tests using Junit and Selenium'
@@ -21,3 +20,6 @@ pipeline {
                     to: 'saidabdullahi10@gmail.com',
                     attachLog: true
             }
+        }
+    }
+}
