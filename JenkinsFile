@@ -45,7 +45,7 @@ pipeline {
                 echo 'Scanning code for vulnerabilities...'
                 // e.g. sh './securityScan.sh' 
             }
-          post {
+            post {
                 success {
                     emailext body: 'Security scan passed successfully!',
                     subject: 'Security Scan Success',
