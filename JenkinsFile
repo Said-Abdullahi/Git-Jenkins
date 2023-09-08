@@ -1,23 +1,70 @@
-//comment 3
-pipeline{
-    agent any
-    stages{
+pipeline {
+    agent any 
+    stages {
         stage('Build') {
             steps {
                 echo 'Building the code using Maven'
+                // e.g. sh 'mvn clean install'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests using JUnit and Selenium'
+                echo 'Running unit and integration tests using Junit and Selenium'
+                // Here we are using Junit and Selenium for unit and integration tests
             }
-            post{
-                always{
-                    emailext body: 'Test Message',
+            post {
+                success {
+                    emailext body: 'Test passed successfully!',
                     subject: 'Test Subject',
                     to: 'saidabdullahi10@gmail.com',
                     attachLog: true
+                    echo 'Tests passed. Send success email.'
+                    // emailext(subject: "Test Stage Success", to: "youremail@domain.com", body: "Tests passed successfully.")
                 }
+                failure {
+                    emailext body: 'Tests failed!',
+                    subject: 'Test Stage Failure',
+                    to: 'saidabdullahi10@gmail.com',
+                    attachLog: true
+                    echo 'Tests failed. Send failure email with logs.'
+                    // emailext(subject: "Test Stage Failure", to: "youremail@domain.com", body: "Tests failed.", attachLog: true)
+                }
+            }
+          post {
+                success {
+                    emailext body: 'Security scan passed successfully!',
+                    subject: 'Security Scan Success',
+                    to: 'saidabdullahi10@gmail.com',
+                    attachLog: true
+                    echo 'Security scan passed. Send success email.'
+                    // emailext(subject: "Test Stage Success", to: "youremail@domain.com", body: "Tests passed successfully.")
+                }
+                failure {
+                    emailext body: 'Security scan detected vulnerabilities!',
+                    subject: 'Security Scan Failure',
+                    to: 'saidabdullahi10@gmail.com',
+                    attachLog: true
+                    echo 'Security scan detected vulnerabilities. Send failure email with logs.'
+                    // emailext(subject: "Test Stage Failure", to: "youremail@domain.com", body: "Tests failed.", attachLog: true)
+                }
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploying to staging environment...'
+                // e.g. sh './deployStaging.sh'
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on staging...'
+                // e.g. sh 'mvn verify -Pintegration-tests'
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploying to production environment...'
+                // e.g. sh './deployProduction.sh'
             }
         }
     }
