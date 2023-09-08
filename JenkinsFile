@@ -1,28 +1,92 @@
-pipeline{
-    agent any
-    stages{
-        stage("Build"){
-            steps{
-                echo "Building ..."
+pipeline {
+    agent any 
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the code...'
+                // e.g. sh 'mvn clean install'
             }
-            post{
-                always{
+        }
+
+        stage('Unit and Integration Tests') {
+            steps {
+                echo 'Running unit and integration tests...'
+                // e.g. sh 'mvn test'
+            }
+            post {
+                success {
                     mail to: "saidabdullahi10@gmail.com",
-                    subject: "Build Status Email",
-                    body: "Build log attached"
+                    subject: "Test Stage Success",
+                    body: "Test passed successfully!"
+                    echo 'Tests passed. Send success email.'
+                    // emailext(subject: "Test Stage Success", to: "youremail@domain.com", body: "Tests passed successfully.")
+                }
+                failure {
+                    mail to: "saidabdullahi10@gmail.com",
+                    subject: "Test Stage Failure",
+                    body: "Tests failed!"
+                    echo 'Tests failed. Send failure email with logs.'
+                    // emailext(subject: "Test Stage Failure", to: "youremail@domain.com", body: "Tests failed.", attachLog: true)
                 }
             }
         }
-        stage("Test"){
-            steps{
-                echo "Testing ..."
+        stage('Code Analysis') {
+            steps {
+                echo 'Analyzing the code...'
+                // e.g. sh 'mvn sonar:sonar'
             }
         }
-        stage("Deploy"){
-            steps{
-                echo "Deploying ..."
+
+        stage('Security Scan') {
+            steps {
+                echo 'Scanning code for vulnerabilities...'
+                // e.g. sh './securityScan.sh' 
+            }
+          post {
+                success {
+                    mail to: "saidabdullahi10@gmail.com",
+                    subject: "Security Scan Success",
+                    body: "Security scan passed successfully!"
+                    echo 'Security scan passed. Send success email.'
+                    // emailext(subject: "Test Stage Success", to: "youremail@domain.com", body: "Tests passed successfully.")
+                }
+                failure {
+                    mail to: "saidabdullahi10@gmail.com",
+                    subject: "Security Scan Failure",
+                    body: "Security scan detected vulnerabilities!"
+                    echo 'Security scan detected vulnerabilities. Send failure email with logs.'
+                    // emailext(subject: "Test Stage Failure", to: "youremail@domain.com", body: "Tests failed.", attachLog: true)
+                }
+            }
+        }
+
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploying to staging environment...'
+                // e.g. sh './deployStaging.sh'
+            }
+        }
+
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on staging...'
+                // e.g. sh 'mvn verify -Pintegration-tests'
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploying to production environment...'
+                // e.g. sh './deployProduction.sh'
             }
         }
     }
-}
-    
+
+    post {
+        failure {
+            echo 'Sending failure email...'
+            // Use mail step here for actual mail
+        }
+    }
+}   
