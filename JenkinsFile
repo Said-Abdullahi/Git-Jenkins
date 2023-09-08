@@ -72,5 +72,11 @@ pipeline {
                 // The application is deployed on EC2 
             }
         }
+        stage('Complete') {
+            steps {
+                echo 'Completed.'
+                // Created extra stage for commit
+            }
+        }
     }
 }  
