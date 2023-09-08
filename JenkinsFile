@@ -44,10 +44,10 @@ pipeline {
                     subject: 'Security Test Subject',
                     to: 'saidabdullahi10@@gmail.com',
                     attachLog: true
-                }
-                    // This will send email if security scan test is succesful.
+                 // This will send email if security scan test is succesful.
                 }
             }
+        }
 
         stage('Deploy to Staging') {
             steps {
