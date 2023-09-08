@@ -16,18 +16,18 @@ pipeline {
             }
             post {
                 success {
-                    mail to: "saidabdullahi10@gmail.com",
-                    subject: "Test Stage Success",
-                    body: "Test passed successfully!",
-                    attachlog: true
+                    emailext body: 'Test passed successfully!',
+                    subject: 'Test Subject',
+                    to: 'saidabdullahi10@gmail.com',
+                    attachLog: true
                     echo 'Tests passed. Send success email.'
                     // emailext(subject: "Test Stage Success", to: "youremail@domain.com", body: "Tests passed successfully.")
                 }
                 failure {
-                    mail to: "saidabdullahi10@gmail.com",
-                    subject: "Test Stage Failure",
-                    body: "Tests failed!",
-                    attachlog: true
+                    emailext body: 'Tests failed!',
+                    subject: 'Test Stage Failure',
+                    to: 'saidabdullahi10@gmail.com',
+                    attachLog: true
                     echo 'Tests failed. Send failure email with logs.'
                     // emailext(subject: "Test Stage Failure", to: "youremail@domain.com", body: "Tests failed.", attachLog: true)
                 }
@@ -47,18 +47,18 @@ pipeline {
             }
           post {
                 success {
-                    mail to: "saidabdullahi10@gmail.com",
-                    subject: "Security Scan Success",
-                    body: "Security scan passed successfully!",
-                    attachlog: true
+                    emailext body: 'Security scan passed successfully!',
+                    subject: 'Security Scan Success',
+                    to: 'saidabdullahi10@gmail.com',
+                    attachLog: true
                     echo 'Security scan passed. Send success email.'
                     // emailext(subject: "Test Stage Success", to: "youremail@domain.com", body: "Tests passed successfully.")
                 }
                 failure {
-                    mail to: "saidabdullahi10@gmail.com",
-                    subject: "Security Scan Failure",
-                    body: "Security scan detected vulnerabilities!",
-                    attachlog: true
+                    emailext body: 'Security scan detected vulnerabilities!',
+                    subject: 'Security Scan Failure',
+                    to: 'saidabdullahi10@gmail.com',
+                    attachLog: true
                     echo 'Security scan detected vulnerabilities. Send failure email with logs.'
                     // emailext(subject: "Test Stage Failure", to: "youremail@domain.com", body: "Tests failed.", attachLog: true)
                 }
