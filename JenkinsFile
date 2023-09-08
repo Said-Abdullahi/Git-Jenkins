@@ -1,71 +1,96 @@
 pipeline {
     agent any 
+
     stages {
         stage('Build') {
             steps {
-                echo 'Building the code using Maven'
+                echo 'Building the code...'
                 // e.g. sh 'mvn clean install'
+                // The 'sh' step can be used to run shell commands like Maven's 'clean install'.
             }
         }
+
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests using Junit and Selenium'
-                // Here we are using Junit and Selenium for unit and integration tests
+                echo 'Running unit and integration tests...'
+                // e.g. sh 'mvn test'
+                // This stage runs unit and integration tests, again possibly using Maven.
             }
             post {
                 success {
-                    emailext body: 'Test passed successfully!',
-                    subject: 'Test Subject',
-                    to: 'saidabdullahi10@gmail.com',
-                    attachLog: true
+                    mail to: "saidabdullahi10@gmail.com",
+                    subject: "Test Stage Success",
+                    body: "Test passed successfully!"
                     echo 'Tests passed. Send success email.'
-                    // emailext(subject: "Test Stage Success", to: "youremail@domain.com", body: "Tests passed successfully.")
+                    // This will send email if the unit and integration test is successful.
                 }
                 failure {
-                    emailext body: 'Tests failed!',
-                    subject: 'Test Stage Failure',
-                    to: 'saidabdullahi10@gmail.com',
-                    attachLog: true
+                    mail to: "saidabdullahi10@gmail.com",
+                    subject: "Test Stage Failure",
+                    body: "Tests failed!"
                     echo 'Tests failed. Send failure email with logs.'
-                    // emailext(subject: "Test Stage Failure", to: "youremail@domain.com", body: "Tests failed.", attachLog: true)
-                }
-            }
-          post {
-                success {
-                    emailext body: 'Security scan passed successfully!',
-                    subject: 'Security Scan Success',
-                    to: 'saidabdullahi10@gmail.com',
-                    attachLog: true
-                    echo 'Security scan passed. Send success email.'
-                    // emailext(subject: "Test Stage Success", to: "youremail@domain.com", body: "Tests passed successfully.")
-                }
-                failure {
-                    emailext body: 'Security scan detected vulnerabilities!',
-                    subject: 'Security Scan Failure',
-                    to: 'saidabdullahi10@gmail.com',
-                    attachLog: true
-                    echo 'Security scan detected vulnerabilities. Send failure email with logs.'
-                    // emailext(subject: "Test Stage Failure", to: "youremail@domain.com", body: "Tests failed.", attachLog: true)
+                    // This will send email if the unit and integration test failed.
                 }
             }
         }
+        stage('Code Analysis') {
+            steps {
+                echo 'Analyzing the code...'
+                // e.g. sh 'mvn sonar:sonar'
+            }
+        }
+
+        stage('Security Scan') {
+            steps {
+                echo 'Scanning code for vulnerabilities...'
+                // e.g. sh './securityScan.sh' 
+                // Here, the code is analysed, possibly with a tool like SonarQube.
+            }
+          post {
+                success {
+                    mail to: "saidabdullahi10@gmail.com",
+                    subject: "Security Scan Success",
+                    body: "Security scan passed successfully!"
+                    echo 'Security scan passed. Send success email.'
+                    // This will send email if security scan test is succesful.
+                }
+                failure {
+                    mail to: "saidabdullahi10@gmail.com",
+                    subject: "Security Scan Failure",
+                    body: "Security scan detected vulnerabilities!"
+                    echo 'Security scan detected vulnerabilities. Send failure email with logs.'
+                    // This will send email if the security scan test failed.
+                }
+            }
+        }
+
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to staging environment...'
                 // e.g. sh './deployStaging.sh'
+                // The application is deployed to a EC2 staging environment
             }
         }
+
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running integration tests on staging...'
                 // e.g. sh 'mvn verify -Pintegration-tests'
+                // After deployment, integration tests are executed in the staging environment.
             }
         }
+
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to production environment...'
                 // e.g. sh './deployProduction.sh'
+                // The application is deployed on EC2 
+            }
+        }
+        stage('Complete'){
+            steps{
+                echo 'Completed.'
             }
         }
     }
-}
+}  
