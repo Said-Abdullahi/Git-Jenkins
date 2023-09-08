@@ -1,16 +1,15 @@
+//comment 3
 pipeline{
-    agent any 
-    stages {
+    agent any
+    stages{
         stage('Build') {
             steps {
                 echo 'Building the code using Maven'
-                // e.g. sh 'mvn clean install'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests using Junit and Selenium'
-                // Here we are using Junit and Selenium for unit and integration tests
+                echo 'Running unit and integration tests using JUnit and Selenium'
             }
             post{
                 always{
@@ -18,6 +17,7 @@ pipeline{
                     subject: 'Test Subject',
                     to: 'saidabdullahi10@gmail.com',
                     attachLog: true
+                }
             }
         }
     }
