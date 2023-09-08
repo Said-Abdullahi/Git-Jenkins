@@ -1,7 +1,6 @@
-pipeline {
+pipeline{
     agent any 
-
-    stages {
+    stages{
         stage('Build') {
             steps {
                 echo 'Building the code using Maven'
@@ -14,7 +13,8 @@ pipeline {
                 echo 'Running unit and integration tests using Junit and Selenium'
                 // Here we are using Junit and Selenium for unit and integration tests
             }
-            post {
+        }
+            post{
                 success {
                     emailext body: 'Test passed successfully!',
                     subject: 'Test Subject',
@@ -87,3 +87,5 @@ pipeline {
         }
     }
 }
+
+
