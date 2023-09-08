@@ -18,7 +18,7 @@ pipeline {
                 success {
                     mail to: "saidabdullahi10@gmail.com",
                     subject: "Test Stage Success",
-                    body: "Test passed successfully!: ${STAGE_NAME}',
+                    body: "Test passed successfully!",
                     attachLog: true
                     echo 'Tests passed. Send success email.'
                     // emailext(subject: "Test Stage Success", to: "youremail@domain.com", body: "Tests passed successfully.")
@@ -26,7 +26,8 @@ pipeline {
                 failure {
                     mail to: "saidabdullahi10@gmail.com",
                     subject: "Test Stage Failure",
-                    body: "Tests failed!"
+                    body: "Tests failed!",
+                    attachLog: true
                     echo 'Tests failed. Send failure email with logs.'
                     // emailext(subject: "Test Stage Failure", to: "youremail@domain.com", body: "Tests failed.", attachLog: true)
                 }
