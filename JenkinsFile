@@ -17,16 +17,11 @@ pipeline {
                 // This stage runs unit and integration tests, again possibly using Maven.
             }
             post {
-                success {
-                    
-                    // This will send email if the unit and integration test is successful.
-                }
-                failure {
-                    mail to: "saidabdullahi10@gmail.com",
-                    subject: "Test Stage Failure",
-                    body: "Tests failed!"
-                    echo 'Tests failed. Send failure email with logs.'
-                    // This will send email if the unit and integration test failed.
+                 always{
+                    emailext body: 'Test Message',
+                    subject: 'Test Subject',
+                    to: 'saidabdullahi10@@gmail.com',
+                    attachLog: true
                 }
             }
         }
@@ -45,8 +40,8 @@ pipeline {
             }
           post {
                 always{
-                    emailext body: 'Test Message',
-                    subject: 'Test Subject',
+                    emailext body: 'Security Test Message',
+                    subject: 'Security Test Subject',
                     to: 'saidabdullahi10@@gmail.com',
                     attachLog: true
                 }
