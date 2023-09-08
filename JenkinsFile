@@ -18,10 +18,7 @@ pipeline {
             }
             post {
                 success {
-                    mail to: "saidabdullahi10@gmail.com",
-                    subject: "Test Stage Success",
-                    body: "Test passed successfully!"
-                    echo 'Tests passed. Send success email.'
+                    
                     // This will send email if the unit and integration test is successful.
                 }
                 failure {
@@ -47,22 +44,15 @@ pipeline {
                 // Here, the code is analysed, possibly with a tool like SonarQube.
             }
           post {
-                success {
-                    mail to: "saidabdullahi10@gmail.com",
-                    subject: "Security Scan Success",
-                    body: "Security scan passed successfully!"
-                    echo 'Security scan passed. Send success email.'
+                always{
+                    emailext body: 'Test Message',
+                    subject: 'Test Subject',
+                    to: 'saidabdullahi10@@gmail.com',
+                    attachLog: true
+                }
                     // This will send email if security scan test is succesful.
                 }
-                failure {
-                    mail to: "saidabdullahi10@gmail.com",
-                    subject: "Security Scan Failure",
-                    body: "Security scan detected vulnerabilities!"
-                    echo 'Security scan detected vulnerabilities. Send failure email with logs.'
-                    // This will send email if the security scan test failed.
-                }
             }
-        }
 
         stage('Deploy to Staging') {
             steps {
